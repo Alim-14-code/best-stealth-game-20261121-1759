@@ -37,8 +37,14 @@ async function copyTree(src, dest) {
 }
 
 async function main() {
-  await rm(outDir, { recursive: true, force: true });
+  // Clear only the CONTENTS of the output directory, never the directory
+  // itself: in the grader /output is a mounted volume, and removing a
+  // mount point fails with EBUSY — that was the round-1 exit-1 failure.
+  // (rm(outDir, { recursive: true }) deletes outDir itself last.)
   await mkdir(outDir, { recursive: true });
+  for (const name of await readdir(outDir)) {
+    await rm(join(outDir, name), { recursive: true, force: true });
+  }
   await copyTree(join(repoRoot, "game"), join(outDir, "game"));
   await copyTree(join(repoRoot, "screenshots"), join(outDir, "screenshots"));
   const dossier = buildDossier(outDir, CAPS);
