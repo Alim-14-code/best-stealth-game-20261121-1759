@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gilded Shadows — a stealth game</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; background: #0b0b14; height: 100%;
+    font-family: "Segoe UI", Verdana, sans-serif; color: #e8e0c8;
+  }
+  body { display: flex; align-items: center; justify-content: center; }
+  #wrap { width: 960px; }
+  #hud {
+    display: flex; align-items: center; gap: 18px;
+    height: 46px; padding: 0 14px;
+    background: linear-gradient(#1c1a26, #14121d);
+    border: 1px solid #3a3247; border-bottom: none;
+    border-radius: 8px 8px 0 0; box-sizing: border-box;
+  }
+  #hud .title { font-weight: 700; letter-spacing: 2px; color: #f2c14e; font-size: 17px; }
+  #hud .level { color: #b9a8d8; font-size: 13px; }
+  #hud .spacer { flex: 1; }
+  #hud .relics { font-size: 14px; color: #f2c14e; }
+  #hud .timer { font-size: 14px; color: #cfc6a8; font-variant-numeric: tabular-nums; }
+  #eye { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #d8cfae; }
+  #eyeBarOuter {
+    display: block; width: 110px; height: 10px; background: #2a2438;
+    border: 1px solid #4a4260; border-radius: 5px; overflow: hidden;
+  }
+  #eyeBar { display: block; height: 100%; width: 0%; background: #f2c14e; transition: width 0.08s linear; }
+  #stage { position: relative; width: 960px; height: 624px; }
+  canvas {
+    display: block; width: 960px; height: 624px;
+    background: #17141f; border: 1px solid #3a3247; border-radius: 0 0 8px 8px;
+    box-sizing: border-box;
+  }
+  #overlay {
+    position: absolute; left: 0; top: 0; width: 960px; height: 624px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; background: rgba(8, 6, 14, 0.72); border-radius: 0 0 8px 8px;
+  }
+  #overlay.hidden { display: none; }
+  #overlay h1 {
+    margin: 0 0 8px 0; font-size: 44px; letter-spacing: 6px; color: #f2c14e;
+    text-shadow: 0 0 24px rgba(242, 193, 78, 0.45);
+  }
+  #overlay h2 { margin: 0 0 14px 0; font-size: 17px; font-weight: 400; color: #cfc6a8; }
+  #overlay p { margin: 4px 0; font-size: 14px; color: #b9b09a; max-width: 560px; line-height: 1.5; }
+  #overlay .keys { color: #8fb8d8; }
+  #overlay .big { font-size: 30px; color: #f2c14e; margin: 0 0 10px 0; letter-spacing: 3px; }
+  #overlay .alarm { color: #ff5a4e; }
+  #overlay button {
+    margin-top: 18px; padding: 10px 26px; font-size: 15px; letter-spacing: 2px;
+    background: #f2c14e; color: #17141f; border: none; border-radius: 6px; cursor: pointer;
+    font-weight: 700;
+  }
+  #overlay button:hover { background: #ffd970; }
+  #hint {
+    margin-top: 10px; text-align: center; font-size: 12px; color: #6f6884;
+  }
+  #hint b { color: #9a90b5; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="hud">
+    <span class="title">GILDED SHADOWS</span>
+    <span class="level" id="hudLevel">The Gilded Archive</span>
+    <span class="spacer"></span>
+    <span class="relics" id="hudRelics">&#9670; 0 / 3</span>
+    <span class="timer" id="hudTimer">00:00</span>
+    <span id="eye">&#9673; <span id="eyeBarOuter"><span id="eyeBar"></span></span></span>
+  </div>
+  <div id="stage">
+    <canvas id="game" width="960" height="624"></canvas>
+    <div id="overlay"></div>
+  </div>
+  <div id="hint"><b>WASD / Arrows</b> move &nbsp;·&nbsp; <b>Shift</b> sneak (slower, harder to spot) &nbsp;·&nbsp; Collect all 3 relics, then slip out the green exit &nbsp;·&nbsp; Crates and statues block a guard's sight — shadow rugs hide you</div>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
